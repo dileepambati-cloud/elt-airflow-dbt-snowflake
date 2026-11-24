@@ -1,0 +1,58 @@
+name: payer_elt
+version: "1.0.0"
+config-version: 2
+
+profile: payer_elt
+
+model-paths: ["models"]
+seed-paths: ["seeds"]
+test-paths: ["tests"]
+macro-paths: ["macros"]
+snapshot-paths: ["snapshots"]
+analysis-paths: ["analyses"]
+
+target-path: "target"
+clean-targets: ["target", "dbt_packages"]
+
+models:
+  payer_elt:
+    staging:
+      +schema: staging
+      +materialized: view
+
+seeds:
+  payer_elt:
+    # Seeds stand in for the raw layer locally and in CI.
+    # In Snowflake the same tables are loaded by COPY INTO (see snowflake/).
+    raw:
+      +schema: raw
+      +quote_columns: false
+      members:
+        +column_types:
+          member_id: varchar
+          zip_code: varchar
+          gender: varchar
+          date_of_birth: date
+          effective_date: date
+          updated_at: timestamp
+      providers:
+        +column_types:
+          provider_id: varchar
+          npi: varchar
+      claims:
+        +column_types:
+          claim_id: varchar
+          member_id: varchar
+          provider_id: varchar
+          claim_status: varchar
+          service_date: date
+          received_date: date
+          billed_amount: decimal(12,2)
+          paid_amount: decimal(12,2)
+          _loaded_at: timestamp
+      claim_lines:
+        +column_types:
+          claim_id: varchar
+          procedure_code: varchar
+          line_billed_amount: decimal(12,2)
+          line_paid_amount: decimal(12,2)

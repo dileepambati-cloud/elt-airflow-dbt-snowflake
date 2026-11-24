@@ -1,0 +1,26 @@
+# dbt connection profiles. Credentials come from environment variables only.
+#
+#   dev       - local DuckDB file, no account needed (also used by CI)
+#   snowflake - the real warehouse
+#
+# Usage: dbt build --profiles-dir . --target dev
+payer_elt:
+  target: dev
+  outputs:
+    dev:
+      type: duckdb
+      path: "{{ env_var('DUCKDB_PATH', 'payer.duckdb') }}"
+      schema: analytics
+      threads: 4
+
+    snowflake:
+      type: snowflake
+      account: "{{ env_var('SNOWFLAKE_ACCOUNT', '') }}"
+      user: "{{ env_var('SNOWFLAKE_USER', '') }}"
+      password: "{{ env_var('SNOWFLAKE_PASSWORD', '') }}"
+      role: "{{ env_var('SNOWFLAKE_ROLE', 'TRANSFORMER') }}"
+      warehouse: "{{ env_var('SNOWFLAKE_WAREHOUSE', 'TRANSFORM_WH') }}"
+      database: "{{ env_var('SNOWFLAKE_DATABASE', 'PAYER') }}"
+      schema: analytics
+      threads: 8
+      client_session_keep_alive: false
