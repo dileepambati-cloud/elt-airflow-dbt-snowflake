@@ -1,0 +1,61 @@
+provider_id,npi,provider_name,specialty,state
+P00001,1669735848,Dr. Ahmed Lee,Emergency Medicine,IL
+P00002,1271228648,Dr. Anita Khan,Dermatology,MO
+P00003,1512064053,Dr. Fatima Kim,Dermatology,IN
+P00004,1479795836,Dr. Wei Lopez,Family Medicine,IL
+P00005,1825866596,Dr. David Johnson,Orthopedics,TN
+P00006,1040133586,Dr. John Johnson,Emergency Medicine,WI
+P00007,1665017635,Dr. Mary Patel,Internal Medicine,MO
+P00008,1806037970,Dr. Wei Lee,Internal Medicine,TN
+P00009,1422905487,Dr. Patricia Reddy,Family Medicine,IL
+P00010,1309269866,Dr. John Nguyen,Internal Medicine,WI
+P00011,1075848494,Dr. Wei Williams,Radiology,TN
+P00012,1257327141,Dr. Jennifer Lee,Radiology,WI
+P00013,1362959455,Dr. Mei Johnson,Cardiology,OH
+P00014,1592630812,Dr. Patricia Johnson,Orthopedics,WI
+P00015,1957505166,Dr. Ahmed Khan,Cardiology,TN
+P00016,1648595378,Dr. Maria Kim,Emergency Medicine,OH
+P00017,1768839717,Dr. Ravi Reddy,Pediatrics,WI
+P00018,1207938926,Dr. Sarah Johnson,Dermatology,MO
+P00019,1266205468,Dr. James Patel,Emergency Medicine,MO
+P00020,1746594829,Dr. John Martin,Dermatology,TX
+P00021,1185553987,Dr. Wei Wilson,Cardiology,WI
+P00022,1449273917,Dr. Mary Martin,Family Medicine,MO
+P00023,1248802015,Dr. Mei Smith,Orthopedics,IN
+P00024,1042262123,Dr. Mary Garcia,Cardiology,MO
+P00025,1341223785,Dr. Carlos Garcia,Orthopedics,TX
+P00026,1663389458,Dr. Mei Lee,Radiology,TX
+P00027,1118371411,Dr. Anita Smith,Radiology,MO
+P00028,1682697199,Dr. Anita Martin,Family Medicine,WI
+P00029,1184064999,Dr. John Martin,Orthopedics,TX
+P00030,1541755260,Dr. Wei Lee,Radiology,MO
+P00031,1329757560,Dr. John Brown,Dermatology,WI
+P00032,1881123328,Dr. Mary Garcia,Pediatrics,MO
+P00033,1343285473,Dr. John Martin,Family Medicine,MO
+P00034,1934321830,Dr. David Garcia,Emergency Medicine,MO
+P00035,1495845043,Dr. Ravi Reddy,Dermatology,TX
+P00036,1267731928,Dr. Robert Johnson,Internal Medicine,TX
+P00037,1951996506,Dr. James Kim,Family Medicine,TN
+P00038,1397315049,Dr. Robert Lopez,Internal Medicine,OH
+P00039,1795756539,Dr. Mary Brown,Emergency Medicine,WI
+P00040,1431477194,Dr. Maria Kim,Emergency Medicine,OH
+P00041,1332733146,Dr. Sarah Garcia,Dermatology,WI
+P00042,1900746493,Dr. Maria Reddy,Dermatology,IN
+P00043,1981977294,Dr. Patricia Lopez,Internal Medicine,OH
+P00044,1479035067,Dr. Fatima Smith,Cardiology,TN
+P00045,1223790131,Dr. Mei Nguyen,Dermatology,WI
+P00046,1747221914,Dr. Patricia Wilson,Family Medicine,OH
+P00047,1634442912,Dr. Fatima Smith,Pediatrics,OH
+P00048,1099144387,Dr. Jennifer Nguyen,Orthopedics,MO
+P00049,1553188387,Dr. Mei Johnson,Cardiology,MO
+P00050,1799739015,Dr. Mary Brown,Dermatology,WI
+P00051,1465432782,Dr. Jennifer Lee,Internal Medicine,OH
+P00052,1216599386,Dr. Wei Patel,Dermatology,IN
+P00053,1786198238,Dr. Jennifer Khan,Family Medicine,WI
+P00054,1935520515,Dr. John Lopez,Radiology,MO
+P00055,1602472674,Dr. Jennifer Williams,Family Medicine,WI
+P00056,1592049350,Dr. Patricia Martin,Dermatology,IL
+P00057,1992118875,Dr. Mary Brown,Family Medicine,IN
+P00058,1913929340,Dr. Ravi Nguyen,Emergency Medicine,TN
+P00059,1601257602,Dr. Ravi Williams,Pediatrics,WI
+P00060,1470583617,Dr. James Lee,Pediatrics,IN
