@@ -1,0 +1,14 @@
+snapshots:
+  - name: snp_members
+    description: >
+      SCD Type 2 history of members. A new version is written whenever a
+      member's updated_at moves forward (plan change, address change ...).
+    relation: ref('stg_members')
+    config:
+      schema: snapshots
+      unique_key: member_id
+      strategy: timestamp
+      updated_at: updated_at
+      # open-ended rows get a far-future end date instead of NULL,
+      # which keeps point-in-time joins simple
+      dbt_valid_to_current: "cast('9999-12-31' as timestamp)"
