@@ -1,0 +1,75 @@
+version: 2
+
+models:
+  - name: dim_member
+    description: >
+      Member dimension with SCD2 history from the `snp_members` snapshot.
+      One row per member version; `is_current` marks the latest.
+    columns:
+      - name: member_key
+        description: Surrogate key for one version of a member.
+        data_tests: [not_null, unique]
+      - name: member_id
+        data_tests: [not_null]
+      - name: valid_from
+        description: When this version became effective.
+      - name: valid_to
+        description: When it was replaced; 9999-12-31 for the current version.
+      - name: is_current
+        data_tests: [not_null]
+
+  - name: dim_provider
+    description: Provider directory plus an UNKNOWN row for claims with unmatched providers.
+    columns:
+      - name: provider_id
+        data_tests: [not_null, unique]
+
+  - name: fct_claims
+    description: >
+      One row per claim, latest delivery. Incremental (merge on claim_id) with a
+      3-day lookback so re-delivered claims update in place.
+    columns:
+      - name: claim_id
+        data_tests: [not_null, unique]
+      - name: member_id
+        data_tests:
+          - not_null
+          - relationships:
+              arguments:
+                to: ref('dim_member')
+                field: member_id
+      - name: provider_id
+        description: Matched provider, or UNKNOWN. `source_provider_id` keeps the original value.
+        data_tests:
+          - not_null
+          - relationships:
+              arguments:
+                to: ref('dim_provider')
+                field: provider_id
+      - name: claim_status
+        data_tests:
+          - accepted_values:
+              arguments:
+                values: ["PAID", "DENIED", "PENDING"]
+      - name: service_month
+        description: First day of the service month.
+        data_tests: [not_null]
+      - name: days_to_receive
+        description: Days between service and the claim being received.
+        data_tests: [non_negative]
+      - name: paid_amount
+        data_tests: [not_null, non_negative]
+
+  - name: mart_pmpm_monthly
+    description: >
+      Paid per member per month by plan. member_months counts members enrolled
+      on or before the end of the month; pmpm = paid_amount / member_months.
+    columns:
+      - name: month_start
+        data_tests: [not_null]
+      - name: plan_code
+        data_tests: [not_null]
+      - name: member_months
+        data_tests: [not_null, non_negative]
+      - name: pmpm
+        data_tests: [not_null, non_negative]
