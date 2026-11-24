@@ -1,0 +1,53 @@
+name: CI
+
+on:
+  push:
+    branches: [main]
+  pull_request:
+    branches: [main]
+
+jobs:
+  python:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.11"
+          cache: pip
+      - run: pip install pytest ruff
+      - name: Lint
+        run: ruff check .
+      - name: Generator tests
+        run: python -m pytest -v
+
+  dbt:
+    # builds every seed, model and test against DuckDB - no warehouse needed
+    runs-on: ubuntu-latest
+    env:
+      DBT_PROFILES_DIR: ${{ github.workspace }}
+      DUCKDB_PATH: ${{ github.workspace }}/ci.duckdb
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.11"
+          cache: pip
+      - name: Install dbt
+        run: pip install "dbt-core>=1.8,<2.0" "dbt-duckdb>=1.8,<2.0"
+      - name: dbt debug
+        run: dbt debug --target dev
+      - name: dbt build
+        run: dbt build --target dev
+      - name: dbt docs generate
+        run: dbt docs generate --target dev
+      - uses: actions/upload-artifact@v4
+        if: always()
+        with:
+          name: dbt-target
+          path: |
+            target/run_results.json
+            target/manifest.json
+            target/catalog.json
+            target/index.html
+            logs/dbt.log
