@@ -1,0 +1,8 @@
+version: 2
+
+models:
+  - name: int_claim_line_summary
+    description: Claim lines rolled up to one row per claim (counts, units, line totals).
+    columns:
+      - name: claim_id
+        data_tests: [not_null, unique]
