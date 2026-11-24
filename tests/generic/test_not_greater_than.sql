@@ -5,7 +5,8 @@
         - name: paid_amount
           data_tests:
             - not_greater_than:
-                other_column: billed_amount
+                arguments:
+                  other_column: billed_amount
 #}
 {% test not_greater_than(model, column_name, other_column) %}
 
