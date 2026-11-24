@@ -1,0 +1,38 @@
+version: 2
+
+sources:
+  - name: raw
+    description: >
+      Raw payer extracts, loaded as-is. Locally these are dbt seeds; in
+      Snowflake they are loaded from an internal stage with COPY INTO.
+    schema: raw
+    loaded_at_field: _loaded_at
+    tables:
+      - name: members
+        description: Member eligibility extract. One row per member (latest version).
+        columns:
+          - name: member_id
+            data_tests: [not_null, unique]
+
+      - name: providers
+        description: Provider directory extract.
+        columns:
+          - name: provider_id
+            data_tests: [not_null, unique]
+
+      - name: claims
+        description: >
+          Claim headers. Append-only - a claim can arrive more than once
+          (e.g. PENDING first, then the final status), so claim_id is NOT
+          unique here; staging keeps the latest version.
+        freshness:
+          warn_after: {count: 2, period: day}
+        columns:
+          - name: claim_id
+            data_tests: [not_null]
+
+      - name: claim_lines
+        description: Service lines for each claim.
+        columns:
+          - name: claim_id
+            data_tests: [not_null]
