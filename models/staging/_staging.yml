@@ -1,0 +1,97 @@
+version: 2
+
+models:
+  - name: stg_members
+    description: Members, trimmed and typed. One row per member.
+    columns:
+      - name: member_id
+        description: Payer member identifier.
+        data_tests: [not_null, unique]
+      - name: gender
+        description: Upper-cased gender code from the extract.
+        data_tests:
+          - accepted_values:
+              values: ["M", "F", "U"]
+      - name: plan_code
+        data_tests:
+          - not_null
+          - accepted_values:
+              values: ["PPO", "HMO", "EPO", "HDHP"]
+      - name: zip_code
+        description: 5-digit ZIP, left-padded so leading zeros survive.
+      - name: updated_at
+        description: When the member record last changed upstream (used for SCD2 history later).
+
+  - name: stg_providers
+    description: Provider directory. One row per provider.
+    columns:
+      - name: provider_id
+        data_tests: [not_null, unique]
+      - name: npi
+        description: 10-digit National Provider Identifier (synthetic).
+        data_tests: [not_null, unique]
+
+  - name: stg_claims
+    description: >
+      Claim headers, deduplicated to the latest delivery per claim_id.
+      `times_delivered` > 1 means the claim was re-sent (usually a status change).
+    columns:
+      - name: claim_id
+        data_tests: [not_null, unique]
+      - name: member_id
+        data_tests:
+          - not_null
+          - relationships:
+              to: ref('stg_members')
+              field: member_id
+      - name: provider_id
+        description: >
+          A few claims reference providers missing from the provider extract;
+          flagged as a warning so the load isn't blocked.
+        data_tests:
+          - not_null
+          - relationships:
+              to: ref('stg_providers')
+              field: provider_id
+              config:
+                severity: warn
+      - name: claim_status
+        data_tests:
+          - accepted_values:
+              values: ["PAID", "DENIED", "PENDING"]
+      - name: claim_type
+        data_tests:
+          - accepted_values:
+              values: ["PROFESSIONAL", "INSTITUTIONAL", "OUTPATIENT"]
+      - name: billed_amount
+        data_tests: [not_null, non_negative]
+      - name: paid_amount
+        data_tests:
+          - not_null
+          - non_negative
+          - not_greater_than:
+              other_column: billed_amount
+              config:
+                severity: warn
+      - name: times_delivered
+        description: How many times this claim_id appeared in the raw feed.
+
+  - name: stg_claim_lines
+    description: Claim service lines. One row per claim line.
+    columns:
+      - name: claim_line_id
+        description: claim_id + line_number.
+        data_tests: [not_null, unique]
+      - name: claim_id
+        data_tests:
+          - not_null
+          - relationships:
+              to: ref('stg_claims')
+              field: claim_id
+      - name: units
+        data_tests: [not_null, non_negative]
+      - name: line_paid_amount
+        data_tests:
+          - non_negative
+          - not_greater_than:
+              other_column: line_billed_amount
